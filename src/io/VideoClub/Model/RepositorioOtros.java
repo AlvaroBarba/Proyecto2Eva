@@ -5,9 +5,7 @@
  */
 package io.VideoClub.Model;
 
-import io.VideoClub.Model.Enums.MovieCategory;
 import io.VideoClub.Model.Enums.ProductsTypes;
-import static io.VideoClub.Model.RepositorioMovie.movies;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -34,7 +32,7 @@ import org.w3c.dom.NodeList;
 public class RepositorioOtros extends HashSet<Other> {
 
     private static RepositorioOtros instance = null;
-    static List<Other> otros;
+    List<Other> otros;
 
     private RepositorioOtros() {
         otros = new ArrayList<>();

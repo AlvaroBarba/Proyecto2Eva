@@ -35,15 +35,7 @@ public class RepositorioClient extends HashSet<Client> {
     private RepositorioClient(){
         clients=new ArrayList<>();
     }
-    
-    public static void main(String[] args) {
-      RepositorioClient r=RepositorioClient.getInstance();
-      r.loadClient();
-      for(Client client:r.clients){
-          System.out.println(client);
-      
-      }
-    }
+ 
     public static RepositorioClient getInstance(){
         if(instance==null){
             instance=new RepositorioClient();

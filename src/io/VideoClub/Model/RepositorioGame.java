@@ -35,22 +35,10 @@ import org.w3c.dom.NodeList;
 public class RepositorioGame extends HashSet<Game> {
 
     private static RepositorioGame instance = null;
-    static List<Game> games;
+    List<Game> games;
 
     private RepositorioGame() {
         games = new ArrayList<>();
-    }
-
-    public static void main(String[] args) {
-        RepositorioGame r = RepositorioGame.getInstance();
-        r.loadGame();
-        //Game g = new Game("LOL", "Juego truño", 20, Status.RESERVED, GameCategory.Cars);
-       // System.out.println(games.add(g));
-        for (Game games : r.games) {
-            System.out.println(games);
-
-        }
-       // r.saveGame();
     }
 
     public static RepositorioGame getInstance() {

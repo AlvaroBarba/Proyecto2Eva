@@ -37,23 +37,12 @@ import org.w3c.dom.NodeList;
 public class RepositorioMovie extends HashSet<Movie> {
 
     private static RepositorioMovie instance = null;
-    static List<Movie> movies;
+   List<Movie> movies;
 
     private RepositorioMovie() {
         movies = new ArrayList<>();
     }
 
-    public static void main(String[] args) {
-        RepositorioMovie r = RepositorioMovie.getInstance();
-        //r.loadMovie();
-        Movie m = new Movie("Batman", "Super heroes", 0, Status.RESERVED, MovieCategory.Horror);
-        System.out.println(movies.add(m));
-        for (Movie movies : r.movies) {
-            System.out.println(movies);
-
-        }
-        r.saveMovie();
-    }
 
     public static RepositorioMovie getInstance() {
         if (instance == null) {
