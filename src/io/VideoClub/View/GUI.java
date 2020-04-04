@@ -15,6 +15,9 @@ public class GUI {
     static AppController controlador = new AppController();
 
     public static void principal() {
+        System.out.println("Iniciando la aplicacion");
+        System.out.println(" Cargando archivos...");
+        controlador.loadAllDDBB();
         int option;
         do {
             System.out.println("Bienvenido al menú del videoclub");
@@ -29,15 +32,18 @@ public class GUI {
             switch (option) {
                 case 1:
                     GClients();
+                    controlador.loadClientsFromDDBB();
                     break;
                 case 2:
                     GProducts();
+                    controlador.loadCatalogFromDDBB();
                     break;
                 case 3:
                     GReservations();
                     break;
                 case 4:
                     System.out.println("Saliendo...");
+                    controlador.saveAllDDBB();
                     System.out.println("Gracias por su confianza");
                     break;
                 default:

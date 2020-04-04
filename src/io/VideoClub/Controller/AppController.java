@@ -16,6 +16,12 @@ import io.VideoClub.Model.Movie;
 import io.VideoClub.Model.Other;
 import io.VideoClub.Model.Product;
 import io.VideoClub.Model.ProductNameComparator;
+import io.VideoClub.Model.RepositorioClient;
+import io.VideoClub.Model.RepositorioGame;
+import io.VideoClub.Model.RepositorioMovie;
+import io.VideoClub.Model.RepositorioOtros;
+import io.VideoClub.Model.RepositorioProduct;
+import io.VideoClub.Model.RepositorioReservation;
 import io.VideoClub.Model.Reservation;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -35,11 +41,18 @@ import java.util.TreeSet;
  */
 public class AppController implements IAppController {
     
+    RepositorioClient listClients = RepositorioClient.getInstance();
+    RepositorioGame listGames = RepositorioGame.getInstance();
+    RepositorioMovie listMovies = RepositorioMovie.getInstance();
+    RepositorioOtros listOthers = RepositorioOtros.getInstance();
+    RepositorioProduct listProducts = RepositorioProduct.getInstance();
+    RepositorioReservation listReservations = RepositorioReservation.getInstance();
+    
     
     @Override
     public Set<Product> listAllProducts() {
         Set<Product> aux = new TreeSet<>();
-        for (Product p : Data.getInstance().getProducts()) {
+        for (Product p : listProducts) {
             if (p.getStatus() != Product.Status.REMOVED) {
                 aux.add(p);
             }
@@ -51,7 +64,7 @@ public class AppController implements IAppController {
     public Set<Product> listAllProducts(Comparator c) {
 
         Set<Product> aux = new TreeSet<>();
-        for (Product p : Data.getInstance().getProducts()) {
+        for (Product p : listProducts) {
             if (p.getStatus() != Product.Status.REMOVED) {
                 aux.add(p);
             }
@@ -66,7 +79,7 @@ public class AppController implements IAppController {
 
     @Override
     public Set<Product> listAllByType(ProductsTypes type) {
-        Set<Product> data = Data.getInstance().getProducts();
+        Set<Product> data = listProducts;
         Set<Product> aux = new TreeSet<>();
 
         data.forEach((list) -> {
@@ -81,7 +94,7 @@ public class AppController implements IAppController {
 
     @Override
     public Set<Product> listAllByName(String name) {
-        Set<Product> data = Data.getInstance().getProducts();
+        Set<Product> data = listProducts;
         Set<Product> aux = new TreeSet<>();
         for (Product lista : data) {
             if (lista.getName().equals(name) && lista.getStatus() != Product.Status.REMOVED) {
@@ -96,7 +109,7 @@ public class AppController implements IAppController {
 
     @Override
     public Set<Product> listAllByName(String name, ProductsTypes type) {
-        Set<Product> data = Data.getInstance().getProducts();
+        Set<Product> data = listProducts;
         Set<Product> aux = new TreeSet<>();
         for (Product lista : data) {
             if (lista.getType() == type && lista.getName().equals(name) && lista.getStatus() != Product.Status.REMOVED) {
@@ -109,7 +122,7 @@ public class AppController implements IAppController {
 
     @Override
     public Set<Product> listAllByStatus(Product.Status status) {
-        Set<Product> data = Data.getInstance().getProducts();
+        Set<Product> data = listProducts;
         Set<Product> aux = new TreeSet<>();
         for (Product lista : data) {
             if (lista.getStatus() == status && lista.getStatus() != Product.Status.REMOVED) {
@@ -122,7 +135,7 @@ public class AppController implements IAppController {
 
     @Override
     public List<Product> listAllDifferentProducts() {
-        Set<Product> data = Data.getInstance().getProducts();
+        Set<Product> data = listProducts;
         TreeSet<Product> aux = new TreeSet<>(new ProductNameComparator());
         for (Product lista : data) {
             if (lista.getStatus() != Product.Status.REMOVED) {
@@ -137,7 +150,7 @@ public class AppController implements IAppController {
 
     @Override
     public List<Product> listAllDifferentMovies() {
-        Set<Product> data = Data.getInstance().getProducts();
+        Set<Product> data = listProducts;
         TreeSet<Movie> aux = new TreeSet<>(new ProductNameComparator());
         for (Product p : data) {
             if (p instanceof Movie && p.getStatus() != Product.Status.REMOVED) {
@@ -146,12 +159,12 @@ public class AppController implements IAppController {
         }
         ArrayList<Product> listaProductos = new ArrayList<>(aux);
         return listaProductos;
-    }        Set<Product> data = Data.getInstance().getProducts();
+    }        Set<Product> data = listProducts;
 
 
     @Override
     public List<Product> listAllDifferentGames() {
-        Set<Product> data = Data.getInstance().getProducts();
+        Set<Product> data = listProducts;
         TreeSet<Game> aux = new TreeSet<>(new ProductNameComparator());
         for (Product p : data) {
             if (p instanceof Game && p.getStatus() != Product.Status.REMOVED) {
@@ -164,7 +177,7 @@ public class AppController implements IAppController {
 
     @Override
     public Map<Product, Integer> listAllAmountOfProducts(String name) {
-        Set<Product> datos = Data.getInstance().getProducts();
+        Set<Product> datos = listProducts;
         int count = 0;
         Product producto = null;
         for(Product p : datos){
@@ -180,7 +193,7 @@ public class AppController implements IAppController {
 
     @Override
     public Map<Product, Integer> listAllAmountOfProducts(ProductsTypes type, String name) {
-        Set<Product> datos = Data.getInstance().getProducts();
+        Set<Product> datos = listProducts;
         int count = 0;
         Product producto = null;
         for(Product p : datos){
@@ -197,7 +210,7 @@ public class AppController implements IAppController {
     @Override
     public Set<IClient> listAllClients() {
         Set<IClient> aux = new TreeSet<>();
-        for (IClient c : Data.getInstance().getClients()) {
+        for (IClient c : listClients) {
             if (!c.getName().equals("BORRADO")) {
                 aux.add(c);
             }
@@ -209,7 +222,7 @@ public class AppController implements IAppController {
     @Override
     public Set<IClient> listAllClients(Comparator c) {
         Set<IClient> aux = new TreeSet<>();
-        for (IClient cli : Data.getInstance().getClients()) {
+        for (IClient cli : listClients) {
             if (!cli.getName().equals("BORRADO")) {
                 aux.add(cli);
             }
@@ -224,7 +237,7 @@ public class AppController implements IAppController {
 
     @Override
     public Set<IClient> listAllClientsWithReservationsNotFinished() {
-        Set<Reservation> A = Data.getInstance().getReservations();
+        Set<Reservation> A = listReservations;
         Set<IClient> aux = new TreeSet<>();
         for (Reservation lista : A) {
             if (lista.status != Reservation.StatusReserve.FINISHED) {
@@ -238,7 +251,7 @@ public class AppController implements IAppController {
     }
 
     public Set<Reservation> listAllReservations(String id) {
-        Set<Reservation> reservations = Data.getInstance().getReservations();
+        Set<Reservation> reservations = listReservations;
         Set<Reservation> aux = new TreeSet<>();
         reservations.forEach((r) -> {
             if (r.cli.getID().equals(id)) {
@@ -251,7 +264,7 @@ public class AppController implements IAppController {
 
     @Override
     public Set<Reservation> listAllReservations() {
-        Set<Reservation> reservations = Data.getInstance().getReservations();
+        Set<Reservation> reservations = listReservations;
         Set<Reservation> aux = new TreeSet<>();
         for (Reservation r : reservations) {
             aux.add(r);
@@ -262,7 +275,7 @@ public class AppController implements IAppController {
 
     @Override
     public Set<Reservation> listAllReservations(Comparator c) {
-        Set<Reservation> reservations = Data.getInstance().getReservations();
+        Set<Reservation> reservations = listReservations;
         List<Reservation> aux = new ArrayList<>();
         for (Reservation r : reservations) {
             aux.add(r);
@@ -274,7 +287,7 @@ public class AppController implements IAppController {
 
     @Override
     public Set<Reservation> listAllReservations(Reservation.StatusReserve status) {
-        Set<Reservation> reservations = Data.getInstance().getReservations();
+        Set<Reservation> reservations = listReservations;
         Set<Reservation> aux = new TreeSet<>();
         for (Reservation r : reservations) {
             if (r.status == status) {
@@ -288,7 +301,7 @@ public class AppController implements IAppController {
 
     @Override
     public double getIncommings(LocalDate from) {
-        Set<Reservation> reservations = Data.getInstance().getReservations();
+        Set<Reservation> reservations = listReservations;
         double result = 0;
         for (Reservation lista : reservations) {
 
@@ -302,7 +315,7 @@ public class AppController implements IAppController {
 
     @Override
     public double getIncommings(LocalDate from, LocalDate to) {
-        Set<Reservation> reservations = Data.getInstance().getReservations();
+        Set<Reservation> reservations = listReservations;
         double result = 0;
         for (Reservation lista : reservations) {
 
@@ -324,7 +337,7 @@ public class AppController implements IAppController {
     public boolean createProduct(String name, String description, double prize) {
         Other o = new Other(name, description, prize, Product.Status.AVAILABLE);
 
-        return Data.getInstance().getProducts().add(o);
+        return listOthers.add(o);
 
     }
 
@@ -332,33 +345,33 @@ public class AppController implements IAppController {
     public boolean createMovie(ProductsTypes type, String name, String description, MovieCategory cat, int minAge, double prize) {
         Movie m = new Movie(cat, minAge, name, description, prize, Product.Status.AVAILABLE, type);
 
-        return Data.getInstance().getProducts().add(m);
+        return listMovies.add(m);
     }
 
     @Override
     public boolean createGame(ProductsTypes type, String name, String description, GameCategory cat, int minAge, double prize) {
         Game g = new Game(cat, minAge, name, description, prize, Product.Status.AVAILABLE, type);
 
-        return Data.getInstance().getProducts().add(g);
+        return listGames.add(g);
     }
 
     @Override
     public boolean createClient(String name, String phone, LocalDateTime time) {
 
-        IClient aux = new Client(name, phone);
+        Client aux = new Client(name, phone);
         aux.setTime(time);
 
-        return Data.getInstance().getClients().add(aux);
+        return listClients.add(aux);
 
     }
 
     @Override
     public boolean removeClient(String id) {
         boolean result = false;
-        Set<IClient> A = Data.getInstance().getClients();
-        for (IClient a : A) {
+        Set<Client> A = listClients;
+        for (Client a : A) {
             boolean reservationnotFinished = false;
-            for (Reservation r : Data.getInstance().getReservations()) {
+            for (Reservation r : listReservations) {
                 if (r.cli.equals(a) && r.finished == null) {
                     reservationnotFinished = true;
                 }
@@ -378,7 +391,7 @@ public class AppController implements IAppController {
     @Override
     public boolean editClient(IClient e, IClient newC) {
         boolean result = false;
-        Set<IClient> A = Data.getInstance().getClients();
+        Set<Client> A = listClients;
         if (A.contains(e)) {
             e.setName(newC.getName());
             e.setPhone(newC.getPhone());
@@ -389,7 +402,7 @@ public class AppController implements IAppController {
     }
 
     public Client SearchClient(String id) {
-        Set<IClient> A = Data.getInstance().getClients();
+        Set<Client> A = listClients;
         Client aux = new Client("", "");
         for (IClient a : A) {
             if (a.getID().equals(id)) {
@@ -404,7 +417,7 @@ public class AppController implements IAppController {
 
     public Product SearchProduct(String id) {
 
-        for (Product p : Data.getInstance().getProducts()) {
+        for (Product p : listProducts) {
             if (p.getKey().equals(id)) {
                 return p;
             }
@@ -415,7 +428,7 @@ public class AppController implements IAppController {
 
     public Product SearchProductByName(String name) {
 
-        for (Product p : Data.getInstance().getProducts()) {
+        for (Product p : listProducts) {
             if (p.getName().equals(name)) {
                 return p;
             }
@@ -432,7 +445,7 @@ public class AppController implements IAppController {
         if (p != null) {
             try {
                 p = (Product) p.clone();
-                added = Data.getInstance().getProducts().add(p);
+                added = listProducts.add(p);
             } catch (CloneNotSupportedException ex) {
                 added = false;
             }
@@ -452,7 +465,7 @@ public class AppController implements IAppController {
             if (p != null) {
                 boolean reservationnotFinished = false;
                 boolean isinreservation = false;
-                for (Reservation r : Data.getInstance().getReservations()) {
+                for (Reservation r : listReservations) {
                     if (r.pro.equals(p) && r.finished == null) {
                         reservationnotFinished = true;
                     }
@@ -462,7 +475,7 @@ public class AppController implements IAppController {
                 }
                 if (!reservationnotFinished) {
                     if (!isinreservation) {
-                        removed = removed || Data.getInstance().getProducts().remove(p);
+                        removed = removed || listProducts.remove(p);
                     } else {
                         removed = removed || p.setRemoved();
                     }
@@ -481,7 +494,7 @@ public class AppController implements IAppController {
         if (p != null) {
             boolean reservationnotFinished = false;
             boolean isinreservation = false;
-            for (Reservation r : Data.getInstance().getReservations()) {
+            for (Reservation r : listReservations) {
                 if (r.pro.equals(p) && r.finished == null) {
                     reservationnotFinished = true;
                 }
@@ -491,7 +504,7 @@ public class AppController implements IAppController {
             }
             if (!reservationnotFinished) {
                 if (!isinreservation) { 
-                    removed = removed || Data.getInstance().getProducts().remove(p);
+                    removed = removed || listProducts.remove(p);
                 } else {
                     removed = removed || p.setRemoved();
                 }
@@ -511,7 +524,7 @@ public class AppController implements IAppController {
 
             if (edited == true) {
                 newP.setKey(key);
-                edited = Data.getInstance().getProducts().add(newP);
+                edited = listProducts.add(newP);
             }
         } else {
             edited = false;
@@ -523,7 +536,7 @@ public class AppController implements IAppController {
     public Product isAvailableProduct(String name, ProductsTypes type) {
         Product p = null;
 
-        for (Product aux : Data.getInstance().getProducts()) {
+        for (Product aux : listProducts) {
             if (aux.getName().equals(name) && aux.getType() == type && aux.getStatus() == Product.Status.AVAILABLE) {
                 p = aux;
                 break;
@@ -544,7 +557,7 @@ public class AppController implements IAppController {
             if (p.getStatus() == Product.Status.AVAILABLE && age) {
                 p.setStatus(Product.Status.RESERVED);
                 Reservation R = new Reservation(prod, client);
-                result = Data.getInstance().getReservations().add(R);
+                result = listReservations.add(R);
             }
         }
 
@@ -584,7 +597,7 @@ public class AppController implements IAppController {
 
     public Reservation searchReservationNotFinished(String productId, String clientId) {
         boolean find = false;
-        Iterator<Reservation> it = Data.getInstance().getReservations().iterator();
+        Iterator<Reservation> it = listReservations.iterator();
         Reservation r = null;
         while (it.hasNext() && !find) {
             r = it.next();
@@ -597,7 +610,7 @@ public class AppController implements IAppController {
 
     public boolean removeReservation(Reservation r) {
         if (r != null) {
-            return Data.getInstance().getReservations().remove(r);
+            return listReservations.remove(r);
         }else{
             return false;
         }
@@ -605,7 +618,7 @@ public class AppController implements IAppController {
 
     public Reservation searchReservation(LocalDate ini, String productId, String clientId) {
         boolean find = false;
-        Iterator<Reservation> it = Data.getInstance().getReservations().iterator();
+        Iterator<Reservation> it = listReservations.iterator();
         Reservation r = null;
         while (it.hasNext() && !find) {
             r = it.next();
@@ -629,12 +642,31 @@ public class AppController implements IAppController {
 
     @Override
     public boolean loadCatalogFromDDBB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean result = true;
+        try{
+            listProducts.loadProduct();
+            listMovies.loadMovie();
+            listGames.loadGame();
+            listOthers.loadOther();
+        }catch(Exception e){
+            System.out.println("Error al cargar BBDD");
+            result = false;
+        }
+        
+        return result;
     }
 
     @Override
     public boolean loadClientsFromDDBB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean result = true;
+        try{
+            listClients.loadClient();
+        }catch(Exception e){
+            System.out.println("Error al cargar BBDD");
+            result = false;
+        }
+        
+        return result;
     }
 
     @Override
@@ -644,17 +676,48 @@ public class AppController implements IAppController {
 
     @Override
     public boolean loadAllDDBB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean result = true;
+        try{
+            listProducts.loadProduct();
+            listMovies.loadMovie();
+            listGames.loadGame();
+            listOthers.loadOther();
+            listClients.loadClient();
+        }catch(Exception e){
+            System.out.println("Error al cargar BBDD");
+            result = false;
+        }
+        
+        return result;
     }
 
     @Override
     public boolean saveCatalogFromDDBB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean result = true;
+        try{
+            listProducts.saveProduct();
+            listMovies.saveMovie();
+            listGames.saveGame();
+            listOthers.saveOther();
+        }catch(Exception e){
+            System.out.println("Error al cargar BBDD");
+            result = false;
+        }
+        
+        return result;
     }
 
     @Override
     public boolean saveClientsFromDDBB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean result = true;
+        try{
+            listClients.saveClient();
+        }catch(Exception e){
+            System.out.println("Error al cargar BBDD");
+            result = false;
+        }
+        
+        return result;
     }
 
     @Override
@@ -664,12 +727,29 @@ public class AppController implements IAppController {
 
     @Override
     public boolean saveAllDDBB() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean result = true;
+        try{
+            listProducts.saveProduct();
+            listMovies.saveMovie();
+            listGames.saveGame();
+            listOthers.saveOther();
+            listClients.saveClient();
+        }catch(Exception e){
+            System.out.println("Error al cargar BBDD");
+            result = false;
+        }
+        
+        return result;
     }
 
-    @Override
+     @Override
     public double getIncommings() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Set<Reservation> reservations = listReservations;
+        double totalIncommings = 0;
+        for (Reservation r : reservations) {
+            totalIncommings += r.getIncome();
+        }
+        return totalIncommings;
     }
     
 }
