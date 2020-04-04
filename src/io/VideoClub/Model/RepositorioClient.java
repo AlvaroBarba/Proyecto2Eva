@@ -60,7 +60,7 @@ public class RepositorioClient extends HashSet<Client> {
         }
         return result;
     }
-    public void saveClient(String file){
+    public void saveClient(){
         try {
             DocumentBuilderFactory dFact=DocumentBuilderFactory.newInstance();
             DocumentBuilder build= dFact.newDocumentBuilder();
@@ -92,7 +92,7 @@ public class RepositorioClient extends HashSet<Client> {
             trans.setOutputProperty("{http://xml.apache.org/xlst} indent-amount","4");
             
             DOMSource source=new DOMSource(doc);
-            StreamResult result=new StreamResult(new File(file));
+            StreamResult result=new StreamResult(new File("listaclientes.xml"));
             trans.transform(source, result);
             
             
@@ -107,7 +107,7 @@ public class RepositorioClient extends HashSet<Client> {
     }
     
     public void loadClient(){
-    File file = new File("XML.xml");
+    File file = new File("listaclientes.xml");
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();

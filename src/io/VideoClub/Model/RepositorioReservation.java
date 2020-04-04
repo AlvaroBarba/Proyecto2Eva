@@ -14,8 +14,12 @@ import java.util.List;
  * @author ANDREA
  */
 public class RepositorioReservation extends HashSet<Reservation> {
-     private static RepositorioReservation instance;
-    private RepositorioReservation(){};
+     private static RepositorioReservation instance=null;
+     List<Reservation> reservations;
+    private RepositorioReservation(){
+        reservations = new ArrayList<>();
+        
+    }
     
     public static RepositorioReservation getInstance(){
         if(instance==null){
@@ -32,22 +36,5 @@ public class RepositorioReservation extends HashSet<Reservation> {
                     
         }
         return result;
-    }
-    
-    public List<Reservation> filter(String regularEspression){
-        List<Reservation> reservations=new ArrayList<>();
-        return reservations;
-        
-    }
-    
-    public void save(){
-        List<Reservation> l=new ArrayList<>();
-        l.addAll(this);
-        //XMLManager.writeList_into_XML(l, "games.XML");
-    }
-    
-    public boolean load(){
-        this.clear();
-        return this.addAll(/*XMLManager.readXML_into_List(games.XML)*/);
     }
 }
